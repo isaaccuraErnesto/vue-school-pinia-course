@@ -9,6 +9,12 @@ defineProps({
 const emit = defineEmits(["update:modelValue", "input"])
 
 const updateValue = (value) => emit("update:modelValue", value)
+
+const handleInput = (event) => {
+  const value = parseInt(event.target.value)
+
+  if (!isNaN(value)) updateValue(value)
+}
 </script>
 <template>
   <span>
@@ -17,7 +23,7 @@ const updateValue = (value) => emit("update:modelValue", value)
       @click="updateValue(modelValue > 0 ? modelValue - 1 : null)">
       -
     </button>
-    <input :value="modelValue" type="number" min="0" aria-label="count" @input="updateValue" />
+    <input :value="modelValue" type="number" min="0" aria-label="count" @input="handleInput" />
     <button
       class="bg-gray-200 px-2 rounded-r cursor-pointer"
       @click="updateValue(modelValue + 1)"

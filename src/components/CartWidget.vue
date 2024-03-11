@@ -14,19 +14,19 @@ const active = ref(false)
     <!-- Icon that always shows -->
     <span class="cursor-pointer" @click="active = true">
       <fa icon="shopping-cart" size="lg" class="text-gray-700" />
-      <div class="cart-count absolute">{{cartStore.totalProducts}}</div>
+      <div class="cart-count absolute">{{cartStore.totalProductCount}}</div>
     </span>
     <!-- Modal Overlay only shows when cart is clicked on -->
     <AppModalOverlay :active="active" @close="active = false">
-      <div v-if="cartStore.totalProducts > 0">
+      <div v-if="cartStore.totalProductCount > 0">
         <ul class="items-in-cart">
           <CartItem
-            v-for="product in cartStore.cart"
-            :key="product.id"
-            :product="product"
-            :count="product.count"
-            @updateCount="(count) => cartStore.updateProductCount(product, count)"
-            @clear="cartStore.removeProduct(product)" />
+            v-for="(products, productId) in cartStore.idGroupedProducts"
+            :key="productId"
+            :product="products[0]"
+            :count="cartStore.productCountById(productId)"
+            @updateCount="(count) => cartStore.updateProductCount(products[0], count)"
+            @clear="cartStore.removeProduct(products[0])" />
         </ul>
         <div class="flex justify-end text-2xl mb-5">
           Total: <strong>{{ `$${cartStore.grandTotal}` }}</strong>

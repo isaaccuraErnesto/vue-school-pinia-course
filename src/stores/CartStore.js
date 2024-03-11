@@ -2,50 +2,74 @@ import { computed, ref } from "vue"
 import { defineStore } from "pinia"
 
 export const useCartStore = defineStore('CartStore', () => {
-  const cart = ref({})
+  const products = ref([])
 
-  const totalProducts = computed(() => {
-    return Object.values(cart.value).reduce((acc, product) => {
-      return acc + product.count
-    }, 0)
+  const idGroupedProducts = computed(() => {
+    return products.value.reduce((groupedProducts, product) => {
+      const clonedProduct = { ...product }
+
+      const { id } = clonedProduct
+
+      if (Object.hasOwn(groupedProducts, id)) {
+        groupedProducts[id].push(clonedProduct)
+      } else {
+        groupedProducts[id] = [clonedProduct]
+      }
+
+      return groupedProducts
+    }, {})
   })
 
+  const productCountById = computed(() => id => idGroupedProducts.value[id].length)
+
+  const totalProductCount = computed(() => products.value.length)
+
   const grandTotal = computed(() => {
-    return Object.values(cart.value).reduce((acc, product) => {
-      return acc + product.count * product.price
+    return products.value.reduce((subTotal, product) => {
+      return subTotal + product.price
     }, 0)
   })
 
   function addToCart(product, productCount) {
     const clonedProduct = { ...product }
 
-    const { id: productId } = clonedProduct
-
     const parsedCount = parseInt(productCount)
 
-    const addingExtra = Object.hasOwn(cart.value, productId)
-
-    cart.value[productId] = {
-      ...clonedProduct,
-      count: addingExtra ? cart.value[productId].count + parsedCount : parsedCount
+    for (let i = 0; i < parsedCount; i++) {
+      products.value.push(clonedProduct)
     }
   }
 
-  function updateProductCount(product, newCount) {
-    const { id: productId } = product
+  function updateProductCount(product, productCount) {
+    // Remove all current instances of the product in the cart
+    removeProduct(product)
 
-    cart.value[productId].count = newCount
+    // Add the product back with the new count
+    addToCart(product, productCount)
   }
 
   function removeProduct(product) {
     const { id: productId } = product
 
-    delete cart.value[productId]
+    products.value = products.value.filter(product => product.id !== productId)
   }
 
   function clearCart() {
-    cart.value = {}
+    products.value = []
   }
 
-  return { cart, grandTotal, totalProducts, addToCart, clearCart, removeProduct, updateProductCount }
+  return {
+    /* State */
+    products,
+    /* Getters */
+    idGroupedProducts,
+    grandTotal,
+    productCountById,
+    totalProductCount,
+    /* Actions */
+    addToCart,
+    clearCart,
+    removeProduct,
+    updateProductCount
+  }
 })
