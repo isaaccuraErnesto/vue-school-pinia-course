@@ -18,7 +18,7 @@ const active = ref(false)
     </span>
     <!-- Modal Overlay only shows when cart is clicked on -->
     <AppModalOverlay :active="active" @close="active = false">
-      <div>
+      <div v-if="cartStore.totalProducts > 0">
         <ul class="items-in-cart">
           <CartItem
             v-for="product in cartStore.cart"
@@ -32,15 +32,15 @@ const active = ref(false)
           Total: <strong>{{ `$${cartStore.grandTotal}` }}</strong>
         </div>
         <div class="flex justify-end">
-          <AppButton class="secondary mr-2">Clear Cart</AppButton>
+          <AppButton class="secondary mr-2" @click="cartStore.clearCart">Clear Cart</AppButton>
           <AppButton class="primary">Checkout</AppButton>
         </div>
       </div>
-      <!-- Uncomment and use condition to show when cart is empty -->
-      <!-- <div><em>Cart is Empty</em></div> -->
+      <div v-else><em>Cart is Empty</em></div>
     </AppModalOverlay>
   </div>
 </template>
+
 <style lang="pcss" scoped>
 .items-in-cart{
   @apply mb-5;

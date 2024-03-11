@@ -43,5 +43,9 @@ export const useCartStore = defineStore('CartStore', () => {
     delete cart.value[productId]
   }
 
-  return { cart, grandTotal, totalProducts, addToCart, removeProduct, updateProductCount }
+  function clearCart() {
+    cart.value = {}
+  }
+
+  return { cart, grandTotal, totalProducts, addToCart, clearCart, removeProduct, updateProductCount }
 })

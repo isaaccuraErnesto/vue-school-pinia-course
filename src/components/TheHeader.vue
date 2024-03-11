@@ -1,6 +1,5 @@
 <script setup>
-// imports
-import CartWidget from './CartWidget.vue';
+import CartWidget from './CartWidget.vue'
 </script>
 
 <template>

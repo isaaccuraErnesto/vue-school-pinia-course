@@ -1,11 +1,18 @@
 <script setup>
 defineProps({
-  product: { type: Object, required: true },
-  count: { type: Number, required: true },
-});
+  product: {
+    type: Object,
+    required: true
+  },
+  count: {
+    type: Number,
+    required: true
+  }
+})
 
 defineEmits(["updateCount", "clear"])
 </script>
+
 <template>
   <li>
     <span>{{ product.name }}</span>

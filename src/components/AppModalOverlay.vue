@@ -1,10 +1,14 @@
 <script setup>
 defineProps({
-  active: { type: Boolean, default: false },
-});
+  active: {
+    type: Boolean,
+    default: false
+  },
+})
 
-defineEmits(["close"]);
+defineEmits(["close"])
 </script>
+
 <template>
   <div v-if="active" class="modal-overlay">
     <div class="modal-overlay-bg" @click="$emit('close')"></div>

@@ -3,7 +3,8 @@
     <slot></slot>
   </button>
 </template>
-<style scoped>
+
+<style lang="pcss" scoped>
 .primary {
   @apply bg-green-500 border-2 border-green-600;
 }
