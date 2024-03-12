@@ -1,12 +1,13 @@
 import { computed, ref } from "vue"
 import { acceptHMRUpdate, defineStore, storeToRefs } from "pinia"
+import { useLocalStorage } from "@vueuse/core"
 
 import { useUserStore } from "./UserStore"
 
 export const useCartStore = defineStore('CartStore', () => {
   const { user } = storeToRefs(useUserStore())
 
-  const products = ref([])
+  const products = ref(useLocalStorage('CartStore:products', []))
 
   const totalProductCount = computed(() => products.value.length)
 
@@ -81,7 +82,9 @@ export const useCartStore = defineStore('CartStore', () => {
     checkout,
     clearCart,
     removeProduct,
-    updateProductCount
+    updateProductCount,
+    /* Options */
+    historyEnabled: true
   }
 })
 
