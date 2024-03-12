@@ -26,8 +26,7 @@ const handleInput = (event) => {
     <input :value="modelValue" type="number" min="0" aria-label="count" @input="handleInput" />
     <button
       class="bg-gray-200 px-2 rounded-r cursor-pointer"
-      @click="updateValue(modelValue + 1)"
-    >
+      @click="updateValue(modelValue + 1)">
       +
     </button>
   </span>
