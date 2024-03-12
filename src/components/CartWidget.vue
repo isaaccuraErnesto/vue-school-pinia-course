@@ -8,6 +8,12 @@ import CartItem from "./CartItem.vue"
 const cartStore = useCartStore()
 
 const active = ref(false)
+
+const handleCheckout = () => {
+  active.value = false
+
+  cartStore.checkout()
+}
 </script>
 <template>
   <div class="relative">
@@ -33,7 +39,7 @@ const active = ref(false)
         </div>
         <div class="flex justify-end">
           <AppButton class="secondary mr-2" @click="cartStore.clearCart">Clear Cart</AppButton>
-          <AppButton class="primary">Checkout</AppButton>
+          <AppButton class="primary" @click="handleCheckout">Checkout</AppButton>
         </div>
       </div>
       <div v-else><em>Cart is Empty</em></div>

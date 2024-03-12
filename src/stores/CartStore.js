@@ -1,8 +1,20 @@
 import { computed, ref } from "vue"
-import { defineStore } from "pinia"
+import { defineStore, storeToRefs } from "pinia"
+
+import { useUserStore } from "./UserStore"
 
 export const useCartStore = defineStore('CartStore', () => {
+  const { user } = storeToRefs(useUserStore())
+
   const products = ref([])
+
+  const totalProductCount = computed(() => products.value.length)
+
+  const grandTotal = computed(() => {
+    return products.value.reduce((subTotal, product) => {
+      return subTotal + product.price
+    }, 0)
+  })
 
   const idGroupedProducts = computed(() => {
     return products.value.reduce((groupedProducts, product) => {
@@ -21,14 +33,6 @@ export const useCartStore = defineStore('CartStore', () => {
   })
 
   const productCountById = computed(() => id => idGroupedProducts.value[id].length)
-
-  const totalProductCount = computed(() => products.value.length)
-
-  const grandTotal = computed(() => {
-    return products.value.reduce((subTotal, product) => {
-      return subTotal + product.price
-    }, 0)
-  })
 
   function addToCart(product, productCount) {
     const clonedProduct = { ...product }
@@ -58,6 +62,12 @@ export const useCartStore = defineStore('CartStore', () => {
     products.value = []
   }
 
+  function checkout() {
+    alert(`${user.value.fullName} has successfully checked out with a total of $${grandTotal.value}`)
+
+    clearCart()
+  }
+
   return {
     /* State */
     products,
@@ -68,6 +78,7 @@ export const useCartStore = defineStore('CartStore', () => {
     totalProductCount,
     /* Actions */
     addToCart,
+    checkout,
     clearCart,
     removeProduct,
     updateProductCount
