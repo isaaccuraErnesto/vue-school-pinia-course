@@ -11,4 +11,8 @@
 .secondary {
   @apply bg-gray-500 border-2 border-gray-600;
 }
+[disabled] {
+  @apply bg-gray-300 border-2 border-gray-400;
+  cursor: not-allowed;
+}
 </style>
