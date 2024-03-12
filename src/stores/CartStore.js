@@ -1,5 +1,5 @@
 import { computed, ref } from "vue"
-import { defineStore, storeToRefs } from "pinia"
+import { acceptHMRUpdate, defineStore, storeToRefs } from "pinia"
 
 import { useUserStore } from "./UserStore"
 
@@ -84,3 +84,7 @@ export const useCartStore = defineStore('CartStore', () => {
     updateProductCount
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useCartStore, import.meta.hot))
+}
